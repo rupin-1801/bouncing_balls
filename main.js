@@ -29,6 +29,29 @@ Ball.prototype.draw = function(){
     ctx.fill();
 }
 
-let testball = new Ball(300, 100, 20, 20, 'red', 20);
 // console.log(testball.color, testball.size, testball.x, testball.y);
-testball.draw();
+Ball.prototype.update = function(){
+    if(this.x + this.size >= width || this.x - this.size <= 0){
+        this.velx = -(this.velx);
+    }
+    if(this.y + this.size >= height || this.y - this.size <= 0){
+        this.vely = -(this.vely);
+    }
+    this.x += this.velx;
+    this.y += this.vely;
+}
+
+let ballpool = [];
+while(ballpool.length < 25){
+    let size = random(10, 20);
+    let ball = new Ball(
+        random(0+size, width-size),
+        random(0+size, height-size),
+        random(-5, 5),
+        random(-5, 5),
+        'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')',
+        size
+    );
+    ballpool.push(ball);
+}
+console.log(ballpool);
