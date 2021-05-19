@@ -1,11 +1,11 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-const width = canvas.width = window.innerWidth;
-const height = canvas.height = window.innerHeight;
+var width = canvas.width = window.innerWidth;
+var height = canvas.height = window.innerHeight;
 
 window.onresize = function(){
-    const width = canvas.width = window.innerWidth;
-    const height = canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
 }
 
 function random(min, max){
@@ -54,4 +54,13 @@ while(ballpool.length < 25){
     );
     ballpool.push(ball);
 }
-console.log(ballpool);
+function loop(){
+    ctx.fillStyle = "rgba(0,0,0,0.9)";
+    ctx.fillRect(0, 0, width, height);
+    for(let i = 0; i < ballpool.length; i++){
+        ballpool[i].draw();
+        ballpool[i].update();
+    }
+    requestAnimationFrame(loop);
+}
+loop();
