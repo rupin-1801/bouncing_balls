@@ -41,26 +41,42 @@ Ball.prototype.update = function(){
     this.y += this.vely;
 }
 
+Ball.prototype.collisionDetect = function(){
+    for(let j = 0; j < ballpool.length; j++){
+        if(!(ballpool[j] == this)){
+            const dx = this.x - ballpool[j].x;
+            const dy = this.y - ballpool[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if(dist < this.size + ballpool[j].size){
+                this.color = ballpool[j].color = 'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')';
+            }
+        }
+    }
+}
+
 let ballpool = [];
 while(ballpool.length < 25){
-    let size = random(10, 20);
+    let size = random(15, 20);
     let ball = new Ball(
         random(0+size, width-size),
         random(0+size, height-size),
-        random(-5, 5),
-        random(-5, 5),
+        random(-10, 10),
+        random(-10, 10),
         'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')',
         size
     );
     ballpool.push(ball);
 }
+
 function loop(){
     ctx.fillStyle = "rgba(0,0,0,0.9)";
     ctx.fillRect(0, 0, width, height);
     for(let i = 0; i < ballpool.length; i++){
         ballpool[i].draw();
         ballpool[i].update();
+        ballpool[i].collisionDetect();
     }
     requestAnimationFrame(loop);
 }
+
 loop();
