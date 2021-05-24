@@ -1,6 +1,9 @@
 const canvas = document.querySelector('canvas');
 const count = document.querySelector('p');
 const final = document.querySelector('h1');
+const box = document.querySelector('.container');
+const play = document.querySelector('button');
+
 const ctx = canvas.getContext('2d');
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
@@ -14,6 +17,8 @@ function random(min, max){
     const num = Math.floor(Math.random() * (max - min + 1)) + min;
     return num;
 }
+
+let n, ballpool, stop; 
 
 function Ball(x, y, velx, vely, color, size){
     this.x = x;
@@ -43,17 +48,6 @@ Ball.prototype.update = function(){
     this.y += this.vely;
 }
 
-canvas.onclick = function(event){
-    for(let i = 0; i < ballpool.length; i++){
-        let xdiff = Math.abs(event.clientX - ballpool[i].x);
-        let ydiff = Math.abs(event.clientY - ballpool[i].y);
-        if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size && ballpool[i].exist){
-            ballpool[i].exist = false;
-            n--;
-        }
-    }
-}
-
 Ball.prototype.collisionDetect = function(){
     for(let j = 0; j < ballpool.length; j++){
         if(!(ballpool[j] == this) && ballpool[j].exist){
@@ -67,23 +61,20 @@ Ball.prototype.collisionDetect = function(){
     }
 }
 
-let ballpool = [];
-let n = Math.floor(width/30);
-n = random(n, n+10);
-let stop = 60;
-while(ballpool.length < n){
-    let size = random(10, 20);
-    let velx = random(-5,5);
-    let vely = random(-5,5);
-    let ball = new Ball(
-        random(0+size, width-size),
-        random(0+size, height-size),
-        (velx < 0)?velx-2:velx+2,
-        (vely < 0)?vely-2:vely+2,
-        'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')',
-        size
-    );
-    ballpool.push(ball);
+canvas.onclick = function(event){
+    for(let i = 0; i < ballpool.length; i++){
+        let xdiff = Math.abs(event.clientX - ballpool[i].x);
+        let ydiff = Math.abs(event.clientY - ballpool[i].y);
+        if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size && ballpool[i].exist){
+            ballpool[i].exist = false;
+            n--;
+        }
+    }
+}
+
+play.onclick = function(){
+    box.style.display = "none";
+    startGame();
 }
 
 function loop(){
@@ -105,10 +96,34 @@ function loop(){
         requestAnimationFrame(loop);
     }
     else{
-        final.innerText = "Congrats, you won!";
-        final.color = "white";
+        end();
     }
 }
 
-loop();
-console.log(ballpool);
+function startGame(){
+    ballpool = [];
+    n = Math.floor(width/30);
+    n = random(n, n+10);
+    stop = 30;
+    while(ballpool.length < n){
+        let size = random(10, 20);
+        let velx = random(-5,5);
+        let vely = random(-5,5);
+        let ball = new Ball(
+            random(0+size, width-size),
+            random(0+size, height-size),
+            (velx < 0)?velx-2:velx+2,
+            (vely < 0)?vely-2:vely+2,
+            'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')',
+            size
+        );
+        ballpool.push(ball);
+    }
+    loop();
+}
+
+function end(){
+    box.style.display ="flex";
+}
+
+startGame();
