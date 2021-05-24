@@ -1,4 +1,6 @@
 const canvas = document.querySelector('canvas');
+const count = document.querySelector('p');
+const final = document.querySelector('h1');
 const ctx = canvas.getContext('2d');
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
@@ -47,6 +49,7 @@ canvas.onclick = function(event){
         let ydiff = Math.abs(event.clientY - ballpool[i].y);
         if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size && ballpool[i].exist){
             ballpool[i].exist = false;
+            n--;
         }
     }
 }
@@ -66,7 +69,9 @@ Ball.prototype.collisionDetect = function(){
 
 let ballpool = [];
 let n = Math.floor(width/30);
-while(ballpool.length < random(n, n+10)){
+n = random(n, n+10);
+let stop = 60;
+while(ballpool.length < n){
     let size = random(10, 20);
     let velx = random(-5,5);
     let vely = random(-5,5);
@@ -84,6 +89,7 @@ while(ballpool.length < random(n, n+10)){
 function loop(){
     ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, width, height);
+    count.innerText = "Count: "+ n;
     for(let i = 0; i < ballpool.length; i++){
         if(ballpool[i].exist){
             ballpool[i].draw();
@@ -91,7 +97,17 @@ function loop(){
             ballpool[i].collisionDetect();
         }
     }
-    requestAnimationFrame(loop);
+    if(n > 0 && stop > 0){
+        requestAnimationFrame(loop);
+    }
+    else if(n == 0 && stop > 0){
+        stop--;
+        requestAnimationFrame(loop);
+    }
+    else{
+        final.innerText = "Congrats, you won!";
+        final.color = "white";
+    }
 }
 
 loop();
