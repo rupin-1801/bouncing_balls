@@ -29,7 +29,6 @@ Ball.prototype.draw = function(){
     ctx.fill();
 }
 
-// console.log(testball.color, testball.size, testball.x, testball.y);
 Ball.prototype.update = function(){
     if(this.x + this.size >= width || this.x - this.size <= 0){
         this.velx = -(this.velx);
@@ -41,13 +40,23 @@ Ball.prototype.update = function(){
     this.y += this.vely;
 }
 
+canvas.onclick = function(event){
+    for(let i = 0; i < ballpool.length; i++){
+        let xdiff = Math.abs(event.clientX - ballpool[i].x);
+        let ydiff = Math.abs(event.clientY - ballpool[i].y);
+        if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size){
+            console.log("caught.");
+        }
+    }
+}
+
 Ball.prototype.collisionDetect = function(){
     for(let j = 0; j < ballpool.length; j++){
         if(!(ballpool[j] == this)){
             const dx = this.x - ballpool[j].x;
             const dy = this.y - ballpool[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if(dist < this.size + ballpool[j].size){
+            if(dist <= this.size + ballpool[j].size){
                 this.color = ballpool[j].color = 'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')';
             }
         }
@@ -55,13 +64,15 @@ Ball.prototype.collisionDetect = function(){
 }
 
 let ballpool = [];
-while(ballpool.length < 25){
-    let size = random(15, 20);
+while(ballpool.length < Math.floor(width/30)){
+    let size = random(10, 20);
+    let velx = random(-5,5);
+    let vely = random(-5,5);
     let ball = new Ball(
         random(0+size, width-size),
         random(0+size, height-size),
-        random(-10, 10),
-        random(-10, 10),
+        (velx < 0)?velx-2:velx+2,
+        (vely < 0)?vely-2:vely+2,
         'rgb('+random(0, 255)+', '+random(0, 255)+', '+ random(0, 255)+')',
         size
     );
@@ -69,7 +80,7 @@ while(ballpool.length < 25){
 }
 
 function loop(){
-    ctx.fillStyle = "rgba(0,0,0,0.9)";
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, width, height);
     for(let i = 0; i < ballpool.length; i++){
         ballpool[i].draw();
@@ -80,3 +91,4 @@ function loop(){
 }
 
 loop();
+console.log(ballpool);
