@@ -20,6 +20,7 @@ function Ball(x, y, velx, vely, color, size){
     this.vely = vely;
     this.color = color;
     this.size = size;
+    this.exist = true;
 }
 
 Ball.prototype.draw = function(){
@@ -44,15 +45,15 @@ canvas.onclick = function(event){
     for(let i = 0; i < ballpool.length; i++){
         let xdiff = Math.abs(event.clientX - ballpool[i].x);
         let ydiff = Math.abs(event.clientY - ballpool[i].y);
-        if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size){
-            console.log("caught.");
+        if(xdiff <= ballpool[i].size && ydiff <= ballpool[i].size && ballpool[i].exist){
+            ballpool[i].exist = false;
         }
     }
 }
 
 Ball.prototype.collisionDetect = function(){
     for(let j = 0; j < ballpool.length; j++){
-        if(!(ballpool[j] == this)){
+        if(!(ballpool[j] == this) && ballpool[j].exist){
             const dx = this.x - ballpool[j].x;
             const dy = this.y - ballpool[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -64,7 +65,8 @@ Ball.prototype.collisionDetect = function(){
 }
 
 let ballpool = [];
-while(ballpool.length < Math.floor(width/30)){
+let n = Math.floor(width/30);
+while(ballpool.length < random(n, n+10)){
     let size = random(10, 20);
     let velx = random(-5,5);
     let vely = random(-5,5);
@@ -83,9 +85,11 @@ function loop(){
     ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, width, height);
     for(let i = 0; i < ballpool.length; i++){
-        ballpool[i].draw();
-        ballpool[i].update();
-        ballpool[i].collisionDetect();
+        if(ballpool[i].exist){
+            ballpool[i].draw();
+            ballpool[i].update();
+            ballpool[i].collisionDetect();
+        }
     }
     requestAnimationFrame(loop);
 }
