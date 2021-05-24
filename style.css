@@ -26,8 +26,44 @@ h1{
     right: 0px;
     left: 0px;
     bottom:0px;
-    color : transparent;
     text-align: center;
     height: fit-content;
+    color: transparent;
     text-shadow: 0 0 4px rgba(255,255,255,0.2);
+}
+.container{
+    max-width: 250px;
+    max-height: 250px;
+    width: 75vw;
+    position: absolute;
+    margin:auto;
+    left:0px;
+    right: 0px;
+    top:0px;
+    bottom: 0px;
+    height: 50vw;
+    border-radius: 20px;
+    background-color: black;
+    border: 1px solid white;
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.message{
+    font-size: 1.7rem;
+    text-align: center;
+    color: white;
+}
+button{
+    width: fit-content;
+    position: relative;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 5px;
+    letter-spacing: 1px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    cursor: pointer;
 }
