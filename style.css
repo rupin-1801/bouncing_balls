@@ -8,13 +8,26 @@ body{
     overflow: hidden;
     height: inherit;
 }
+p{
+    user-select: none;
+    position: absolute;
+    color: white;
+    right: 50px;
+    font-size: large;
+    letter-spacing: 4px;
+}
 h1{
-    font-size: 2rem;
+    user-select: none;
+    font-size: 3rem;
     letter-spacing: -1px;
     position: absolute;
-    margin: 0px;
-    top : -4px;
-    right: 5px;
+    margin: auto;
+    top : 0px;
+    right: 0px;
+    left: 0px;
+    bottom:0px;
     color : transparent;
-    text-shadow: 0 0 4px white;
+    text-align: center;
+    height: fit-content;
+    text-shadow: 0 0 4px rgba(255,255,255,0.2);
 }
