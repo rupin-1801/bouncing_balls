@@ -57,6 +57,7 @@ h1{
     max-width: 250px;
     max-height: 250px;
     width: 75vw;
+    z-index: +100;
     position: absolute;
     margin:auto;
     left:0px;
