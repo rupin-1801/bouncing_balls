@@ -19,7 +19,7 @@ function random(min, max){
     return num;
 }
 
-let n, ballpool, stop, opacity = 0; 
+let n, ballpool, stop; 
 
 function Ball(x, y, velx, vely, color, size){
     this.x = x;
@@ -89,15 +89,12 @@ function loop(){
             ballpool[i].collisionDetect();
         }
     }
-    if(n > 0 && stop > 0){
-        requestAnimationFrame(loop);
-    }
-    else if(n == 0 && stop > 0){
+    let raf = requestAnimationFrame(loop);
+    if(n == 0){
         stop--;
-        requestAnimationFrame(loop);
     }
-    else{
-        end();
+    if(stop == 0){
+        end(raf);
     }
 }
 
@@ -125,14 +122,15 @@ function startGame(){
 
 function end(){
     box.style.display ="flex";
+    cancelAnimationFrame(raf);
 }
 
-function interval(counter=10){
+function interval(counter=10, opacity = 1){
     countdown.textContent = `${Math.round(counter/2)}`;
-    opacity = (opacity == 0) ? 1 : 0;
     countdown.style.opacity = opacity;
+    opacity = (opacity == 0) ? 1 : 0;
     if(counter/2 > 0){
-        setTimeout(interval, 500, counter-1);
+        setTimeout(interval, 500, counter-1, opacity);
     }
     else{
         countdown.style.opacity = "0";
