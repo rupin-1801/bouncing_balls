@@ -1,5 +1,9 @@
+*{
+    box-sizing: border-box;
+}
 html, body{
     margin: 0px;
+    background-color: black;
 }
 html{
     height: 100%;
@@ -7,6 +11,24 @@ html{
 body{
     overflow: hidden;
     height: inherit;
+}
+.countdown{
+    position: absolute;
+    width: 15vw;
+    height: 15vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 50px;
+    border-radius: 50%;
+    margin: auto;
+    top:0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px; 
+    transition: opacity 0.1s ease-out;
+    background-color: rgba(255,255,255,0.2);
 }
 p{
     user-select: none;
