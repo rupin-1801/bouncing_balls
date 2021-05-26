@@ -3,6 +3,7 @@ const count = document.querySelector('p');
 const final = document.querySelector('h1');
 const box = document.querySelector('.container');
 const play = document.querySelector('button');
+const countdown = document.querySelector('.countdown');
 
 const ctx = canvas.getContext('2d');
 var width = canvas.width = window.innerWidth;
@@ -18,7 +19,7 @@ function random(min, max){
     return num;
 }
 
-let n, ballpool, stop; 
+let n, ballpool, stop, opacity = 0; 
 
 function Ball(x, y, velx, vely, color, size){
     this.x = x;
@@ -74,13 +75,13 @@ canvas.onclick = function(event){
 
 play.onclick = function(){
     box.style.display = "none";
-    startGame();
+    interval();
 }
 
 function loop(){
     ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, width, height);
-    count.innerText = "Count: "+ n;
+    count.innerText = "Balls: " + n;
     for(let i = 0; i < ballpool.length; i++){
         if(ballpool[i].exist){
             ballpool[i].draw();
@@ -126,4 +127,19 @@ function end(){
     box.style.display ="flex";
 }
 
-startGame();
+function interval(counter=10){
+    countdown.textContent = `${Math.round(counter/2)}`;
+    opacity = (opacity == 0) ? 1 : 0;
+    countdown.style.opacity = opacity;
+    if(counter/2 > 0){
+        setTimeout(interval, 500, counter-1);
+    }
+    else{
+        countdown.style.opacity = "0";
+        startGame();
+    }
+}
+
+window.onload = function(){
+    interval();
+};
